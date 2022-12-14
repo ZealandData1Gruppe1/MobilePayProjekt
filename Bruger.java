@@ -1,5 +1,6 @@
 public class Bruger {
     private BankKonto b;
+
     private String navn;
     private int brugerID;
     private String kode;
@@ -22,6 +23,24 @@ public class Bruger {
         this.navn = navn;
         this.kode = kode;
     }
+
+    //Metoder
+
+    public Bruger hentBruger(String telefonNR)
+    {
+        return new Bruger();
+    }
+    public void addBankKonto(Bruger b, String kontoNR)
+    {
+
+    }
+
+    public boolean eksistererBruger(Bruger b)
+    {
+        return true;
+    }
+
+    //Getter og Setter
     public BankKonto getB() {
         return b;
     }
@@ -60,4 +79,13 @@ public class Bruger {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Bruger{" +
+                "b=" + b +
+                ", navn='" + navn + '\'' +
+                ", brugerID=" + brugerID +
+                ", kode='" + kode + '\'' +
+                '}';
+    }
 }
