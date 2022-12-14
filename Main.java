@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String[] args) {
-        DBSQL dbsql = new DBSQL();
+        //DBSQL dbsql = new DBSQL();
 
-        dbsql.test();
+        //dbsql.test();
     }
 }
