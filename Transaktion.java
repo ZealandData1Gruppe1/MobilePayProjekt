@@ -4,7 +4,7 @@ public class Transaktion {
     private Bruger afsender;
     private Bruger modtager;
     private double amount;
-    private int TransaktionID;
+    private int transaktionID;
     private Date dato;
     private String kommentar;
 
@@ -12,7 +12,7 @@ public class Transaktion {
         this.afsender = afsender;
         this.modtager = modtager;
         this.amount = amount;
-        TransaktionID = transaktionID;
+        transaktionID = transaktionID;
         this.dato = dato;
         this.kommentar = kommentar;
     }
@@ -53,11 +53,11 @@ public class Transaktion {
     }
 
     public int getTransaktionID() {
-        return TransaktionID;
+        return transaktionID;
     }
 
     public void setTransaktionID(int transaktionID) {
-        TransaktionID = transaktionID;
+        transaktionID = transaktionID;
     }
 
     public Date getDato() {
