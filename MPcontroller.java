@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MPcontroller {
     private DBSQL dbsql = new DBSQL();
@@ -33,9 +34,22 @@ public class MPcontroller {
     {
         return true;
     }
-    public void sendPenge(Bruger afsender, Bruger modtager, double amount)
+    public void sendPenge(Bruger afsender, Bruger modtager, double amount, String kommentar, Date dato)
     {
 
+        double afsenderBalance = afsender.getB().getBalance();
+        if (afsenderBalance < amount)
+            System.out.println("Der er ikke nok penge på kontoen");
+        else
+            afsenderBalance-= amount;
+            //Send opdater databasen.
+
+        double modtagersBalance = modtager.getB().getBalance();
+        modtagersBalance += amount;
+        //Opdatere databasen
+
+        Transaktion nyTransaktion = new Transaktion(afsender,modtager,amount,dato,kommentar);
+        //Opdater databasen
     }
     public void visAnmodninger(Bruger b)
     {
@@ -43,7 +57,7 @@ public class MPcontroller {
     }
     public void godkendAnmodning(Transaktion t)
     {
-        sendPenge(t.getAfsender(),t.getModtager(),t.getAmount());
+        
     }
 
     public void logUd()
