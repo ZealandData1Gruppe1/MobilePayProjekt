@@ -1,14 +1,14 @@
 public class Virksomhed extends Bruger{
     private String virksomhedsNR;
-    private int cvr;
+    private String cvr;
 
-    public Virksomhed(BankKonto b, String navn, int brugerID, String kode, String virksomhedsNR, int cvr) {
+    public Virksomhed(BankKonto b, String navn, int brugerID, String kode, String virksomhedsNR, String cvr) {
         super(b, navn, brugerID, kode);
         this.virksomhedsNR = virksomhedsNR;
         this.cvr = cvr;
     }
 
-    public Virksomhed(BankKonto b, String navn, String kode, String virksomhedsNR, int cvr) {
+    public Virksomhed(BankKonto b, String navn, String kode, String virksomhedsNR, String cvr) {
         super(b, navn, kode);
         this.virksomhedsNR = virksomhedsNR;
         this.cvr = cvr;
@@ -22,11 +22,11 @@ public class Virksomhed extends Bruger{
         this.virksomhedsNR = virksomhedsNR;
     }
 
-    public int getCvr() {
+    public String getCvr() {
         return cvr;
     }
 
-    public void setCvr(int cvr) {
+    public void setCvr(String cvr) {
         this.cvr = cvr;
     }
 }
