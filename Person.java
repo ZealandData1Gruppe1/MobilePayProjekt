@@ -18,6 +18,12 @@ public class Person extends Bruger {
         this.cpr = cpr;
         this.telefonNR = telefonNR;
     }
+    public Person( String navn, String kode, String cpr, String telefonNR) {
+        super( navn, kode);
+        this.cpr = cpr;
+        this.telefonNR = telefonNR;
+    }
+
 
     public String getCpr() {
         return cpr;

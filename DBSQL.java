@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DBSQL {
     private Connection connection;
@@ -25,7 +26,7 @@ public class DBSQL {
     } catch (SQLException throwables) {
         throwables.printStackTrace();
     }
-    }    public void withdrawMoney(Bruger b, int beløb)
+    }  public void withdrawMoney(Bruger b, int beløb)
     {
 
     }
@@ -35,7 +36,28 @@ public class DBSQL {
     }
     public void opretTransaktion(Transaktion t)
     {
+        try {
+            String sql = "INSERT INTO Transaktion(afsenderID,modtagerID,beløb,dato,kommentar) VALUES('" +t.getAfsender().getBrugerID() + "','" + t.getModtager().getBrugerID() + "'," +
+                    t.getAmount() + ",'" + "2022" +"','"+t.getKommentar()+"')";
+            Statement stmt = connection.createStatement();
+            stmt.execute(sql);
+            stmt.close();
 
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public void opretAnmodning(Transaktion t)
+    {
+        try {
+            String sql = "INSERT INTO Anmod(afsenderID,modtagerID,beløb,dato,kommentar) VALUES('" +t.getAfsender().getBrugerID() + "','" + t.getModtager().getBrugerID() + "'," +
+                    t.getAmount() + ",'" + "2022" +"','"+t.getKommentar()+"')";
+            Statement stmt = connection.createStatement();
+            stmt.execute(sql);
+            stmt.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
     public void opretPerson(Person p)
     {
@@ -120,10 +142,66 @@ public class DBSQL {
             throwables.printStackTrace();
         }
     }
-    public ArrayList<Transaktion> hentHistorik(int brugerID)
+    public ArrayList<Transaktion> hentHistorikPerson(int personID)
     {
+        int afsenderPersonID =0;
+        int modtagerPersonID =0;
+        int brugerID =0;
+        ArrayList<Transaktion> historik = new ArrayList<Transaktion>();
+        try {
+            String sql1 = "SELECT Bruger.brugerID from Bruger WHERE Bruger.personID ="+personID;
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql1);
+            if(rs.next())
+            {
+                 brugerID=rs.getInt(1);
+            }
+            } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            }
+            try {
+            String sql2 = "SELECT * from Transaktion Where afsenderID ="+brugerID+"or modtagerID="+brugerID;
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql2);
+            while(rs.next())
+            {
+                //vi henter oplysninger på afsenderen
+                afsenderPersonID =rs.getInt(1);
+                String sql4 = "SELECT Person.name, Person.cpr,Person.telefonNR,Person.kode from Person inner join Bruger on Person.personID = Bruger.personID WHERE Person.personID ="+afsenderPersonID;
+                Statement stmt4 = connection.createStatement();
+                ResultSet rs2 = stmt.executeQuery(sql4);
+                Person afsender = new Person();
+                afsender.setNavn(rs2.getString("navn"));
+                afsender.setCpr(rs2.getString("cpr"));
+                afsender.setTelefonNR(rs2.getString("telefonNR"));
+                afsender.setKode(rs2.getString("kode"));
+                //Vi henter oplysninger på modtageren
+                modtagerPersonID=rs2.getInt(2);
+                String sql3 = "SELECT Person.name, Person.cpr,Person.telefonNR,Person.kode from Person inner join Bruger on Person.personID = Bruger.personID WHERE Person.personID ="+modtagerPersonID;
+                Statement stmt3 = connection.createStatement();
+                ResultSet rs1= stmt.executeQuery(sql2);
+                Person modtager = new Person();
+                afsender.setNavn(rs1.getString("navn"));
+                afsender.setCpr(rs1.getString("cpr"));
+                afsender.setTelefonNR(rs1.getString("telefonNR"));
+                afsender.setKode(rs1.getString("kode"));
+                //Transaktion oprettes
+                Transaktion t1 = new Transaktion();
+                t1.setAfsender(afsender);
+                t1.setModtager(modtager);
+                t1.setAmount(rs1.getDouble("beløb"));
+                t1.setDato(new Date());
+                t1.setKommentar(rs1.getString("kommentar"));
 
-        return new ArrayList<Transaktion>();
+                historik.add(t1);
+            }
+            stmt.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+        return historik;
     }
     public ArrayList<Transaktion> hentAnmodninger(int brugerID)
     {

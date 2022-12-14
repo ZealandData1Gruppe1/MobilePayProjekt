@@ -19,6 +19,10 @@ public class Bruger {
         this.navn = navn;
         this.kode = kode;
     }
+    public Bruger(String navn, String kode) {
+        this.navn = navn;
+        this.kode = kode;
+    }
 
     //Metoder
 
@@ -37,7 +41,6 @@ public class Bruger {
     }
 
     //Getter og Setter
-
     public BankKonto getB() {
         return b;
     }
