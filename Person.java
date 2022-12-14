@@ -34,4 +34,12 @@ public class Person extends Bruger {
     public void setTelefonNR(String telefonNR) {
         this.telefonNR = telefonNR;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "Person{ " +
+                "cpr='" + cpr + '\'' +
+                ", telefonNR='" + telefonNR + '\'' +
+                '}';
+    }
 }
