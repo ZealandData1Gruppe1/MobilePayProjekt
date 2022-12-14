@@ -1,12 +1,12 @@
 public class BankKonto {
-    private int BankKontoID;
+    private int bankKontoID;
     private double balance;
-    private String KontoNR;
+    private String kontoNR;
 
     public BankKonto(int bankKontoID, double balance, String kontoNR) {
-        BankKontoID = bankKontoID;
+        bankKontoID = bankKontoID;
         this.balance = balance;
-        KontoNR = kontoNR;
+        kontoNR = kontoNR;
     }
     public BankKonto()
     {
@@ -15,15 +15,15 @@ public class BankKonto {
     }
     public BankKonto( double balance, String kontoNR) {
         this.balance = balance;
-        KontoNR = kontoNR;
+        kontoNR = kontoNR;
     }
 
     public int getBankKontoID() {
-        return BankKontoID;
+        return bankKontoID;
     }
 
     public void setBankKontoID(int bankKontoID) {
-        BankKontoID = bankKontoID;
+        bankKontoID = bankKontoID;
     }
 
     public double getBalance() {
@@ -35,10 +35,10 @@ public class BankKonto {
     }
 
     public String getKontoNR() {
-        return KontoNR;
+        return kontoNR;
     }
 
     public void setKontoNR(String kontoNR) {
-        KontoNR = kontoNR;
+        kontoNR = kontoNR;
     }
 }

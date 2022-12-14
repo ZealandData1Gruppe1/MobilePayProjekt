@@ -1,7 +1,7 @@
 public class Bruger {
     private BankKonto b;
     private String navn;
-    private int BrugerID;
+    private int brugerID;
     private String kode;
    public Bruger()
    {
@@ -10,7 +10,7 @@ public class Bruger {
     public Bruger(BankKonto b, String navn, int brugerID, String kode) {
         this.b = b;
         this.navn = navn;
-        BrugerID = brugerID;
+        brugerID = brugerID;
         this.kode = kode;
     }
     public Bruger(BankKonto b, String navn, String kode) {
@@ -35,11 +35,11 @@ public class Bruger {
     }
 
     public int getBrugerID() {
-        return BrugerID;
+        return brugerID;
     }
 
     public void setBrugerID(int brugerID) {
-        BrugerID = brugerID;
+        brugerID = brugerID;
     }
 
     public String getKode() {

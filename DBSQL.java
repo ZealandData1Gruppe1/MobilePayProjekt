@@ -13,13 +13,22 @@ public class DBSQL {
         connection = null;
         stmt = null;
         try {
-            String url = "jdbc:sqlite:C:/sqlite/studerende.db";
+            String url = "jdbc:sqlite:C:\\Users\\Kevin\\Documents\\GitHub\\MobilePayProjekt\\1.semesterprojekt.db";
             connection = DriverManager.getConnection(url);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
-    public void withdrawMoney(Bruger b, int beløb)
+    public void test() {
+    try {
+        String sql = "INSERT INTO Person (navn, cpr, telefonNR, kode) VALUES('1','2','3','4')";
+        Statement stmt = connection.createStatement();
+        stmt.execute(sql);
+        stmt.close();
+    } catch (SQLException throwables) {
+        throwables.printStackTrace();
+    }
+    }    public void withdrawMoney(Bruger b, int beløb)
     {
 
     }
