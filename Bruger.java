@@ -62,7 +62,7 @@ public class Bruger {
     }
 
     public void setBrugerID(int brugerID) {
-        brugerID = brugerID;
+        this.brugerID = brugerID;
     }
 
     public String getKode() {
