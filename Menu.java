@@ -53,7 +53,7 @@ public class Menu {
             System.out.println("Indsæt dit unikke 5 cifret nummer");// Virksomheden skal selv finde på et nummer
             nyVirksomhed.setVirksomhedsNR(input.next());
             System.out.println("Indsæt Virksomhedens CVR nummer: ");
-            nyVirksomhed.setCvr(input.nextInt());
+            nyVirksomhed.setCvr(input.next());
             //Opdatere databasen
             System.out.println("Du er nu oprettet!");
         }

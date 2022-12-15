@@ -13,6 +13,10 @@ public class Virksomhed extends Bruger{
         this.virksomhedsNR = virksomhedsNR;
         this.cvr = cvr;
     }
+    public Virksomhed()
+    {
+
+    }
 
     public String getVirksomhedsNR() {
         return virksomhedsNR;
