@@ -66,16 +66,12 @@ public class Menu {
         double afsenderBalance = afsender.getB().getBalance();
         if (afsenderBalance < amount)
             System.out.println("Der er ikke nok penge på kontoen");
-        else
-            afsenderBalance-= amount;
-            //Send opdater databasen.
-
-        double modtagersBalance = modtager.getB().getBalance();
-        modtagersBalance += amount;
-        //Opdatere databasen
-
-        Transaktion nyTransaktion = new Transaktion(afsender,modtager,amount,dato,kommentar);
-        //Opdater databasen
+        else {
+            dbsql.withdrawMoney(afsender, amount);
+            dbsql.depositMoney(modtager, amount);
+            Transaktion nyTransaktion = new Transaktion(afsender, modtager, amount, dato, kommentar);
+            dbsql.opretTransaktion(nyTransaktion);
+        }
     }
     public void visAnmodninger(Bruger b)
     {
