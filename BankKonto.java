@@ -23,7 +23,7 @@ public class BankKonto {
     }
 
     public void setBankKontoID(int bankKontoID) {
-        bankKontoID = bankKontoID;
+        this.bankKontoID = bankKontoID;
     }
 
     public double getBalance() {
@@ -39,6 +39,6 @@ public class BankKonto {
     }
 
     public void setKontoNR(String kontoNR) {
-        kontoNR = kontoNR;
+        this.kontoNR = kontoNR;
     }
 }

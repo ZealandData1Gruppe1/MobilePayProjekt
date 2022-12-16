@@ -10,7 +10,7 @@ public class DBSQL {
         connection = null;
         stmt = null;
         try {
-            String url = "jdbc:sqlite:C:\\Users\\Kevin\\Documents\\GitHub\\MobilePayProjekt\\1.semesterprojekt.db";
+            String url = "jdbc:sqlite:C:\\Users\\peite\\Desktop\\skole projekter\\Semester projekt\\MobilePayProjekt\\1.semesterprojekt.db";
             connection = DriverManager.getConnection(url);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -321,11 +321,12 @@ public class DBSQL {
         int bankNR = 0;
         try {
 
-            String sql = "SELECT Virksomhed.navn, Virksomhed.cvr, Virksomhed.virksomhedNR, Virksomhed.bankKontoID, Virksomhed.kode FROM Virksomhed WHERE virksomhedNR='" + virksomhedsNR + "'";
+            String sql = "SELECT Virksomhed.virksomhedID,Virksomhed.navn, Virksomhed.cvr, Virksomhed.virksomhedNR, Virksomhed.bankKontoID, Virksomhed.kode FROM Virksomhed WHERE virksomhedNR='" + virksomhedsNR + "'";
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next())
             {
+                dataVirksomhed.setBrugerID(rs.getInt("virksomhedID"));
                 dataVirksomhed.setNavn(rs.getString("navn"));
                 dataVirksomhed.setCvr(rs.getString("cvr"));
                 dataVirksomhed.setVirksomhedsNR(rs.getString("virksomhedNR"));
@@ -341,7 +342,7 @@ public class DBSQL {
         try {
             String sql1 = "SELECT * FROM BankKonto WHERE bankKontoID=" + bankNR;
             Statement stmt1 = connection.createStatement();
-            ResultSet rs1 = stmt.executeQuery(sql1);
+            ResultSet rs1 = stmt1.executeQuery(sql1);
             while(rs1.next())
             {
                 databankKonto.setBankKontoID(rs1.getInt("bankKontoID"));
@@ -398,11 +399,11 @@ public class DBSQL {
 
         return dataPerson;
     }
-    public BankKonto findBankKonto(int kontoNR)
+    public BankKonto findBankKonto(String kontoNR)
     {
         BankKonto dataBankKonto = new BankKonto();
         try {
-            String sql = "SELECT * FROM BankKonto WHERE kontoNR=" +kontoNR;
+            String sql = "SELECT * FROM BankKonto WHERE kontoNR='"  +kontoNR + "'";
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next())
@@ -418,9 +419,81 @@ public class DBSQL {
         return dataBankKonto;
     }
 
-    public void forbindBankKonto(int BrugerID, int BankKontoID) {
+    public void forbindBankKontoPerson(int BrugerID, String kontoNR)
+    {
+        int kontoIDny=0;
+        try {
+            String sql = "SELECT BankKonto.bankKontoID FROM BankKonto WHERE kontoNR=" + kontoNR;
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next())
+            {
+                kontoIDny = rs.getInt("bankKontoID");
+            }
+            stmt.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+
+        try {
+            String sql1 = "UPDATE Person SET bankKontoID =" + kontoIDny + " WHERE personID=" + BrugerID;
+            Statement stmt1 = connection.createStatement();
+            stmt1.execute(sql1);
+            stmt1.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
     }
+
+
+
+    public void forbindBankKontoVirksomhed(int BrugerID, String kontoNR)
+    {
+        int kontoIDny=0;
+        try {
+            String sql = "SELECT BankKonto.bankKontoID FROM BankKonto WHERE kontoNR=" + kontoNR;
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next())
+            {
+                kontoIDny = rs.getInt("bankKontoID");
+            }
+            stmt.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+
+        try {
+            String sql1 = "UPDATE Virksomhed SET bankKontoID =" + kontoIDny + " WHERE virksomhedID=" + BrugerID;
+            Statement stmt1 = connection.createStatement();
+            stmt1.execute(sql1);
+            stmt1.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public void sletAnmodning(Transaktion t)
+    {
+        try {
+            String sql = "DELETE FROM Anmod WHERE Anmod.anmodID=" + t.getTransaktionID();
+            Statement stmt = connection.createStatement();
+            stmt.execute(sql);
+            stmt.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+
+
+
 
 
 }

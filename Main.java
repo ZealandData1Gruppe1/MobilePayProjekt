@@ -20,11 +20,11 @@ public class Main {
         Person p5 = new Person();
         Person p6 = new Person();
         Person p7 = new Person();
-        Person p8 = new Person();
+        Virksomhed v1 = new Virksomhed();
         p5 = dbsql.hentPerson("11111111");
         p6 = dbsql.hentPerson("22222222");
         p7 = dbsql.hentPerson("33333333");
-        p8 = dbsql.hentPerson("44444444");
+        v1 = dbsql.hentVirksomhed("12345");
 
         /*Transaktion t1 = new Transaktion(p5, p6, 500, new Date(), "Test 1");
         Transaktion t2 = new Transaktion(p5, p7, 500, new Date(), "Test 2");
@@ -54,6 +54,21 @@ public class Main {
             System.out.print(" Afsender: "+test.get(i).getAfsender());
             System.out.println(" Modtager: " +test.get(i).getModtager());
         }
+
+
+        BankKonto b1 = dbsql.findBankKonto("12");
+        dbsql.forbindBankKontoPerson(p5.getBrugerID(),b1.getKontoNR());
+
+        BankKonto b2 = dbsql.findBankKonto("123456");
+        dbsql.forbindBankKontoPerson(p6.getBrugerID(), b2.getKontoNR());
+
+
+        BankKonto b3 = dbsql.findBankKonto("987654");
+        dbsql.forbindBankKontoVirksomhed(v1.getBrugerID(),b3.getKontoNR());
+
+        Transaktion t2 = new Transaktion();
+        t2.setTransaktionID(1);
+        dbsql.sletAnmodning(t2);
 
 
     }

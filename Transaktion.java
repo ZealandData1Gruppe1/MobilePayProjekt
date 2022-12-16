@@ -57,7 +57,7 @@ public class Transaktion {
     }
 
     public void setTransaktionID(int transaktionID) {
-        transaktionID = transaktionID;
+        this.transaktionID = transaktionID;
     }
 
     public Date getDato() {
