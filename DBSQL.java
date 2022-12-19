@@ -10,7 +10,7 @@ public class DBSQL {
         connection = null;
         stmt = null;
         try {
-            String url = "jdbc:sqlite:C:\\Users\\Kevin\\Documents\\GitHub\\MobilePayProjekt\\1.semesterprojekt.db";
+            String url = "jdbc:sqlite:C:\\Users\\Arbejde\\Desktop\\1.semesterprojektTEST.db";
             connection = DriverManager.getConnection(url);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -393,7 +393,7 @@ public class DBSQL {
                 Person afsender = new Person();
 
                 try {
-                    String sql4 = "SELECT Person.navn, Person.cpr, Person.telefonNR, Person.kode from Person inner join Bruger on Person.personID = Bruger.personID WHERE Person.personID =" + personID;
+                    String sql4 = "SELECT Person.navn, Person.cpr, Person.telefonNR, Person.kode from Person inner join Bruger on Person.personID = Bruger.personID WHERE Person.personID =" + afsenderPersonID;
                     Statement stmt4 = connection.createStatement();
                     ResultSet rs4 = stmt4.executeQuery(sql4);
                     //oplysninger fra databases bruges til at oprette en person som kaldes afsender
