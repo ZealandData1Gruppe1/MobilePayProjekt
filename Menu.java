@@ -75,14 +75,7 @@ public class Menu {
         Transaktion nyTransaktion = new Transaktion(afsender,modtager,amount,dato,kommentar);
         //Opdater databasen
     }
-    public void visAnmodninger(Bruger modtager) {
-        DBSQL dbsqlAnmod = new DBSQL();
-        ArrayList<Transaktion> anmodninger = dbsqlAnmod.hentAnmodninger(modtager.getBrugerID());
-        //databasen returner et array
-        for (Transaktion t : anmodninger) {
-            System.out.println(t);
-        }
-    }
+
     public void visHistorik(Bruger bruger){
         //ArrayList<Transaktion> historik = getDBSql().hentHistorikPerson(bruger.getBrugerID());
         //for (Transaktion transaktion : historik){

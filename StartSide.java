@@ -85,18 +85,56 @@ public class StartSide extends JFrame implements ActionListener {
         this.anmodningliste = anmodningliste;
     }
 
-    StartSide(ArrayList<Transaktion> h) {
+    StartSide(ArrayList<Transaktion> h, ArrayList<Transaktion>a) {
         historikliste = h;
+        anmodningliste = a;
+        Person p1 = new Person("","","","");
+        Person p2 = new Person("","","","");
+
+        Transaktion h1 = new Transaktion(p1,p2,0.0,new Date(),"");
+        Transaktion h2 = new Transaktion(p1,p2,0.0,new Date(),"");
+        Transaktion h3 = new Transaktion(p1,p2,0.0,new Date(),"");
+        if(h.size()>2)
+        {
+            h1 =h.get(0);
+            h2 =h.get(1);
+            h3 =h.get(2);
+        }
+        if(h.size()==2)
+        {
+            h1 =h.get(0);
+            h2 =h.get(1);
+        }
+        if(h.size()==1)
+        {
+            h1 =h.get(0);
+        }
+
+        Transaktion a1 = new Transaktion(p1,p2,0.0,new Date(),"");
+        Transaktion a2 = new Transaktion(p1,p2,0.0,new Date(),"");
+        Transaktion a3 = new Transaktion(p1,p2,0.0,new Date(),"");
+        if(a.size()>2)
+        {
+            a1 =a.get(0);
+            a2 =a.get(1);
+            a3 =a.get(2);
+        }
+        if(a.size()==2)
+        {
+            a1 =h.get(0);
+            a2 =h.get(1);
+        }
+        if(a.size()==1)
+        {
+            a1 =h.get(0);
+        }
+
         frame = new JFrame();
         frame.setTitle("Velkommen til MobilPay");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new FlowLayout());
         frame.setResizable(true);
         frame.setSize(650, 650);
-
-
-
-
 
         //Send Penge panelet
         sendPengePanel = new JPanel();
@@ -124,11 +162,12 @@ public class StartSide extends JFrame implements ActionListener {
         visAnmodningPanel = new JPanel();
         overskriftSendPengePanel = new JLabel("Anmodninger");
         overskriftVisAnmodningPanelTom = new JLabel("");
-        visAnmodnigLabel1 = new JLabel("Her står anmodning 1");
+        visAnmodnigLabel1 = new JLabel(printflot(a1));
+        visAnmodnigLabel2 = new JLabel(printflot(a2));
+        visAnmodnigLabel3 = new JLabel(printflot(a3));
+
         visAnmodningKnap1 = new JButton("Bekæft anmodning");
-        visAnmodnigLabel2 = new JLabel("Her står anmodning 2");
         visAnmodningKnap2 = new JButton("Bekæft anmodning");
-        visAnmodnigLabel3 = new JLabel("Her står anmodning 3");
         visAnmodningKnap3 = new JButton("Bekæft anmodning");
         visAnmodningPanel.add(overskriftSendPengePanel);
         visAnmodningPanel.add(overskriftVisAnmodningPanelTom);
@@ -147,9 +186,9 @@ public class StartSide extends JFrame implements ActionListener {
         visHistorikPanel = new JPanel();
         visHistorikOverskrift = new JLabel("Historik");
         visHistorikOverskriftTom = new JLabel("");
-        visHistorik1 = new JLabel(printflot(h.get(0)));
-        visHistorik2 = new JLabel(printflot(h.get(1)));
-        visHistorik3 = new JLabel(printflot(h.get(2)));
+        visHistorik1 = new JLabel(printflot(h1));
+        visHistorik2 = new JLabel(printflot(h2));
+        visHistorik3 = new JLabel(printflot(h3));
         visHistorikPanel.add(visHistorikOverskrift);
         //visHistorikPanel.add(visHistorikOverskriftTom);
         visHistorikPanel.add(visHistorik1);
@@ -229,7 +268,7 @@ public class StartSide extends JFrame implements ActionListener {
         String modtagerNavn = t.getModtager().getNavn();
         double amount = t.getAmount();
         String kommentar = t.getKommentar();
-        String historik = afsenderNavn  + " " +  modtagerNavn + amount +" "+" " +  kommentar;
+        String historik = "Fra: "+afsenderNavn  + " " + "Til: "+ modtagerNavn + " Beløb: " +amount +"DKK "+" " + kommentar;
         return historik;
     }
 

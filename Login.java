@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.temporal.ValueRange;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Login extends JFrame implements ActionListener {
     JFrame frame;
@@ -64,7 +65,12 @@ public class Login extends JFrame implements ActionListener {
 
     }
 
+    public ArrayList<Transaktion> flip(ArrayList<Transaktion> t)
+    {
+        Collections.reverse(t);
 
+        return t;
+    }
     private void forkertLogin(){
         JOptionPane forkertLogin = new JOptionPane("Bruger navn og/eller kode er forkert");
     }
@@ -96,15 +102,20 @@ public class Login extends JFrame implements ActionListener {
             }
             if (loginNR.equals(dbTelefonNR) && loginKode.equals(dbKode)) {
 
-
                 if (test == 1) {
-                    StartSide startSide = new StartSide(dbsql.hentHistorik(p1.getBrugerID()));
+                    ArrayList<Transaktion> list =dbsql.hentHistorik(p1.getTelefonNR());
+                    Collections.reverse(list);
+                    StartSide startSide = new StartSide(list,dbsql.hentAnmodninger(p1.getTelefonNR()));
                     startSide.setAktivPerson(p1);
+
+
 
                 }
                 if (test == 2)
                 {
-                    StartSide startSide = new StartSide(dbsql.hentHistorik(v1.getBrugerID()));
+                    ArrayList<Transaktion> listv =dbsql.hentHistorik(v1.getVirksomhedsNR());
+                    Collections.reverse(listv);
+                    StartSide startSide = new StartSide(listv,dbsql.hentAnmodninger(v1.getVirksomhedsNR()));
                     startSide.setAktivVirksomhed(v1);
                 }
 
@@ -121,6 +132,7 @@ public class Login extends JFrame implements ActionListener {
                 //frame.dispose();
                 OpretVirksomhed opretVirksomhed = new OpretVirksomhed();
             }
+
         }
     }
 }
