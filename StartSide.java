@@ -43,7 +43,6 @@ public class StartSide extends JFrame implements ActionListener {
     JLabel visHistorik3;
 
     JButton test;
-
     Person aktivPerson = new Person();
     Virksomhed aktivVirksomhed = new Virksomhed();
 
@@ -66,7 +65,6 @@ public class StartSide extends JFrame implements ActionListener {
     public void setAktivVirksomhed(Virksomhed aktivVirksomhed) {
         this.aktivVirksomhed = aktivVirksomhed;
     }
-
 
     public JFrame getFrame() {
         return frame;
@@ -113,7 +111,6 @@ public class StartSide extends JFrame implements ActionListener {
         if (h.size() == 1) {
             h1 = h.get(0);
         }
-
         Transaktion a1 = new Transaktion(p1, p2, 0.0, new Date(), "");
         Transaktion a2 = new Transaktion(p1, p2, 0.0, new Date(), "");
         Transaktion a3 = new Transaktion(p1, p2, 0.0, new Date(), "");
@@ -222,22 +219,17 @@ public class StartSide extends JFrame implements ActionListener {
         frame.add(overskriftSendeAnmodning);
         frame.add(AnmodningPanel);
         frame.setVisible(true);
-
-
     }
-
     double amountRecieved;
     double amoutAnmodetAmount;
-
-
+    DBSQL dbsql = new DBSQL();
     // ActionListener
     @Override           // Der skal være if else statements hvis der ikke er nok penge på kontoen.
     public void actionPerformed(ActionEvent e) {
-        String tjekModtager = modtager.getText();
-        DBSQL dbsql = new DBSQL();
-        Virksomhed v1 = new Virksomhed();
-        Person p1 = new Person();
         if (e.getSource() == sendPengKnap) {
+            String tjekModtager = modtager.getText();
+            Virksomhed v1 = new Virksomhed();
+            Person p1 = dbsql.hentPerson(tjekModtager);
             amountRecieved = Double.parseDouble(amount.getText());
             if (aktivPerson.getB().getBalance() > amountRecieved) {
                 if (tjekModtager.length() == 5) {
@@ -248,62 +240,77 @@ public class StartSide extends JFrame implements ActionListener {
                     dbsql.depositMoney(v1, amountRecieved);
                 }
                 if (tjekModtager.length() > 5) {
-                    p1 = dbsql.hentPerson(tjekModtager);
-                    Transaktion t2 = new Transaktion(getAktivPerson(), p1, amountRecieved, new Date(), kommentar.getText());
-                    dbsql.opretTransaktion(t2);
+                    Transaktion t1 = new Transaktion(getAktivPerson(),p1,amountRecieved,new Date(),kommentar.getText());
+                    dbsql.opretTransaktion(t1);
                     dbsql.withdrawMoney(aktivPerson, amountRecieved);
                     dbsql.depositMoney(p1, amountRecieved);
-
                 }
                 setAktivPerson(dbsql.hentPerson(aktivPerson.getTelefonNR()));
                 JOptionPane.showMessageDialog(null, "Penge Sendt!", "Succes", JOptionPane.PLAIN_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Du har ikke nok penge på kontoen", "Du er fattig", JOptionPane.PLAIN_MESSAGE);
             }
-
-
         }
         if (e.getSource() == visAnmodningKnap1) {
-            ArrayList<Transaktion> anmodningList = new ArrayList<>();
-            anmodningList = dbsql.hentAnmodninger(aktivPerson.getTelefonNR());
             Transaktion anmodning1 = new Transaktion();
-            anmodning1 = anmodningList.get(0);
-            Bruger modtagerFraAnmodning = anmodning1.getModtager();
-            amountRecieved = anmodning1.getAmount();
-            String kommentarAnmodning = anmodning1.getKommentar();
-
-            if (aktivPerson.getB().getBalance() > amountRecieved) {
-                Transaktion t2 = new Transaktion(modtagerFraAnmodning, getAktivPerson(), amountRecieved, new Date(), kommentarAnmodning);
-                dbsql.opretTransaktion(t2);
-                dbsql.withdrawMoney(aktivPerson, amountRecieved);
-                dbsql.depositMoney(modtagerFraAnmodning, amountRecieved);
-                setAktivPerson(dbsql.hentPerson(aktivPerson.getTelefonNR()));
+            anmodning1 = anmodningliste.get(0);
+            String modtager = modtagerAnmodning.getText();
+            Person modtagerPerson = dbsql.hentPerson(modtager);
+            if (aktivPerson.getB().getBalance() > anmodning1.getAmount()) {
+                dbsql.opretTransaktion(anmodning1);
+                dbsql.withdrawMoney(aktivPerson, anmodning1.getAmount());
+                dbsql.depositMoney(modtagerPerson, anmodning1.getAmount());
                 dbsql.sletAnmodning(anmodning1);
+                setAktivPerson(dbsql.hentPerson(aktivPerson.getTelefonNR()));
                 JOptionPane.showMessageDialog(null, "Penge Sendt!", "Succes", JOptionPane.PLAIN_MESSAGE);
                 visAnmodnigLabel1.setVisible(false);
             } else
                 JOptionPane.showMessageDialog(null, "Du har ikke nok penge på kontoen", "Du er fattig", JOptionPane.PLAIN_MESSAGE);
         }
-
-
         if (e.getSource() == visAnmodningKnap2) {
-            JOptionPane.showMessageDialog(null, "Penge Sendt!", "Succes", JOptionPane.PLAIN_MESSAGE);
-            visAnmodnigLabel2.setVisible(false);
+            Transaktion anmodning1 = new Transaktion();
+            anmodning1 = anmodningliste.get(1);
+            String modtager = modtagerAnmodning.getText();
+            Person modtagerPerson = dbsql.hentPerson(modtager);
+            if (aktivPerson.getB().getBalance() > anmodning1.getAmount()) {
+                dbsql.opretTransaktion(anmodning1);
+                dbsql.withdrawMoney(aktivPerson, anmodning1.getAmount());
+                dbsql.depositMoney(modtagerPerson, anmodning1.getAmount());
+                dbsql.sletAnmodning(anmodning1);
+                setAktivPerson(dbsql.hentPerson(aktivPerson.getTelefonNR()));
+                JOptionPane.showMessageDialog(null, "Penge Sendt!", "Succes", JOptionPane.PLAIN_MESSAGE);
+                visAnmodnigLabel2.setVisible(false);
+            } else
+                JOptionPane.showMessageDialog(null, "Du har ikke nok penge på kontoen", "Du er fattig", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == visAnmodningKnap3) {
+            Transaktion anmodning1 = new Transaktion();
+            anmodning1 = anmodningliste.get(2);
+            String modtager = modtagerAnmodning.getText();
+            Person modtagerPerson = dbsql.hentPerson(modtager);
+            if (aktivPerson.getB().getBalance() > anmodning1.getAmount()) {
+                dbsql.opretTransaktion(anmodning1);
+                dbsql.withdrawMoney(aktivPerson, anmodning1.getAmount());
+                dbsql.depositMoney(modtagerPerson, anmodning1.getAmount());
+                dbsql.sletAnmodning(anmodning1);
+                setAktivPerson(dbsql.hentPerson(aktivPerson.getTelefonNR()));
             JOptionPane.showMessageDialog(null, "Penge Sendt!", "Succes", JOptionPane.PLAIN_MESSAGE);
             visAnmodnigLabel3.setVisible(false);
+            } else
+                JOptionPane.showMessageDialog(null, "Du har ikke nok penge på kontoen", "Du er fattig", JOptionPane.PLAIN_MESSAGE);
         }
-        String anmodingModtager = modtagerAnmodning.getText();
-        Person p2 = new Person();
-        amoutAnmodetAmount = Double.parseDouble(amountAnmodning.getText());
         if(e.getSource()== anmondingKnap){
+            String anmodingModtager = modtagerAnmodning.getText();
+            Person p2 = new Person();
+            String input = "+"+amountAnmodning.getText()+"d";
+            amoutAnmodetAmount =Double.parseDouble(input);
+            System.out.println(amoutAnmodetAmount);
             p2 = dbsql.hentPerson(anmodingModtager);
+            System.out.println(p2);
             Transaktion t3 = new Transaktion(p2,getAktivPerson(),amoutAnmodetAmount,new Date(),kommentarAnmodning.getText());
             dbsql.opretAnmodningFraPerson(t3);
             JOptionPane.showMessageDialog(null,"Anmodning Sendt!","Succes",JOptionPane.PLAIN_MESSAGE);
         }
-
     }
         public String printflot (Transaktion t){
             String afsenderNavn = t.getAfsender().getNavn();

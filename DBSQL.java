@@ -10,7 +10,7 @@ public class DBSQL {
         connection = null;
         stmt = null;
         try {
-            String url = "jdbc:sqlite:C:\\Users\\Arbejde\\Desktop\\1 Semester projekt\\MobilePayProjekt\\1.semesterprojekt.db";
+            String url = "jdbc:sqlite:C:\\Users\\Kevin\\Documents\\GitHub\\MobilePayProjekt\\1.semesterprojektFremlæggelse.db";
             connection = DriverManager.getConnection(url);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -43,154 +43,188 @@ public class DBSQL {
 
     public void opretTransaktion(Transaktion t) {
         int afsenderBrugerID = 0;
+        int modtagerBrugerID = 0;
+        String amount = String.valueOf(t.getAmount());
+        String dato = "2022";
+        String kommentar = t.getKommentar();
+        int abpID = 0;
+        int abvID = 0;
         try {
-            String sql5 = "Select Bruger.personID, Bruger.virksomhedID from Bruger Where Bruger.personID =" + t.getAfsender().getBrugerID();
-            Statement stmt5 = connection.createStatement();
-            ResultSet rs5 = stmt5.executeQuery(sql5);
+            String sql = "Select Bruger.personID, Bruger.virksomhedID from Bruger Where Bruger.personID =" + t.getAfsender().getBrugerID();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
             // Vi opretter 2 int for at holde endten personID eller virksomhedID fra brugertabel
-            int abpID = 0;
-            int abvID = 0;
-            abpID = rs5.getInt("personID");
-            abvID = rs5.getInt("virksomhedID");
-            if (abpID > 0) {
-                try {
-                    String sql20 = "Select Bruger.brugerID From Bruger where Bruger.personID=" + t.getAfsender().getBrugerID();
-                    Statement stmt20 = connection.createStatement();
-                    ResultSet rs20 = stmt20.executeQuery(sql20);
-                    afsenderBrugerID = rs20.getInt(1);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            if (abvID > 0) {
-                try {
-                    String sql25 = "Select Bruger.brugerID From Bruger where Bruger.virksomhedID=" + t.getAfsender().getBrugerID();
-                    Statement stmt25 = connection.createStatement();
-                    ResultSet rs25 = stmt25.executeQuery(sql25);
-                    afsenderBrugerID = rs25.getInt(1);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            abpID = rs.getInt("personID");
+            abvID = rs.getInt("virksomhedID");
+                    stmt.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
+        if (abpID > 0) {
+                try {
+                    String sql = "Select Bruger.brugerID From Bruger where Bruger.personID=" + t.getAfsender().getBrugerID();
+                    Statement stmt = connection.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while(rs.next()){
+                        afsenderBrugerID = rs.getInt(1);
+                    }
+                    stmt.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        if (abvID > 0) {
+                try {
+                    String sql = "Select Bruger.brugerID From Bruger where Bruger.virksomhedID=" + t.getAfsender().getBrugerID();
+                    Statement stmt = connection.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while(rs.next()) {
+                        afsenderBrugerID = rs.getInt(1);
+                    }
+                    stmt.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         int mbpID = 0;
         int mbvID = 0;
-        int modtagerBrugerID = 0;
         try {
-            String sql6 = "Select Bruger.personID, Bruger.virksomhedID from Bruger Where Bruger."+t.getModtager().getClass().getName().toLowerCase()+"ID"+" =" + t.getModtager().getBrugerID();
-            Statement stmt6 = connection.createStatement();
-            ResultSet rs6 = stmt6.executeQuery(sql6);
+            String sql = "Select Bruger.personID, Bruger.virksomhedID from Bruger Where Bruger.personID=" + t.getModtager().getBrugerID();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
             /* Vi opretter 2 int for at holde endten personID eller virksomhedID fra brugertabel */
-            mbpID = rs6.getInt("personID");
-            mbvID = rs6.getInt("virksomhedID");
+            while(rs.next()) {
+                mbpID = rs.getInt("personID");
+                mbvID = rs.getInt("virksomhedID");
+            }
+            stmt.close();
             }   catch(SQLException throwables){
                 throwables.printStackTrace();
             }
             if (mbpID > 0) {
                 try {
-                    String sqlp = "Select Bruger.brugerID From Bruger where Bruger.personID=" + t.getModtager().getBrugerID();
-                    Statement stmtp = connection.createStatement();
-                    ResultSet rsp = stmtp.executeQuery(sqlp);
-                    modtagerBrugerID = rsp.getInt(1);
+                    String sql = "Select Bruger.brugerID From Bruger where Bruger.personID=" + t.getModtager().getBrugerID();
+                    Statement stmt = connection.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while(rs.next()) {
+                        modtagerBrugerID = rs.getInt(1);
+                    }
+                    stmt.close();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
             }
-                if (mbvID > 0) {
+            if (mbvID > 0) {
                     try {
-                        String sqlv = "Select Bruger.brugerID From Bruger where Bruger.virksomhedID=" + t.getModtager().getBrugerID();
-                        Statement stmtv = connection.createStatement();
-                        ResultSet rsv = stmtv.executeQuery(sqlv);
-                        modtagerBrugerID = rsv.getInt(1);
+                        String sql = "Select Bruger.brugerID From Bruger where Bruger.virksomhedID=" + t.getModtager().getBrugerID();
+                        Statement stmt = connection.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
+                        while(rs.next()) {
+                            modtagerBrugerID = rs.getInt(1);
+                        }
+                        stmt.close();
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
-                        String sql = "INSERT INTO Transaktion(afsenderID,modtagerID,beløb,dato,kommentar) VALUES(" + afsenderBrugerID + "," + modtagerBrugerID + "," +
-                                t.getAmount() + ",'" + "2022" + "','" + t.getKommentar() + "')";
-                        try {
-                            Statement stmt = connection.createStatement();
-                            stmt.execute(sql);
-                            stmt.close();
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+            try {
+                String sql = "INSERT INTO Transaktion (afsenderID,modtagerID,beløb,dato,kommentar) VALUES("+afsenderBrugerID+","+ modtagerBrugerID+","+
+                                    amount + ",'" + dato + "','" +kommentar + "')";
+                Statement stmt = connection.createStatement();
+                stmt.execute(sql);
+                stmt.close();
+            } catch (SQLException e) {throw new RuntimeException(e);}
+    }
 
     public void opretAnmodningFraPerson(Transaktion t) {
         int afsenderBrugerID = 0;
+        int abpID = 0;
+        int abvID = 0;
         try {
-            String sql5 = "Select Bruger.personID, Bruger.virksomhedID from Bruger Where Bruger.personID =" + t.getAfsender().getBrugerID();
-            Statement stmt5 = connection.createStatement();
-            ResultSet rs5 = stmt5.executeQuery(sql5);
-            // Vi opretter 2 int for at holde endten personID eller virksomhedID fra brugertabel
-            int abpID = 0;
-            int abvID = 0;
-            abpID = rs5.getInt("personID");
-            abvID = rs5.getInt("virksomhedID");
-            if (abpID > 0) {
-                try {
-                    String sql20 = "Select Bruger.brugerID From Bruger where Bruger.personID=" + t.getAfsender().getBrugerID();
-                    Statement stmt20 = connection.createStatement();
-                    ResultSet rs20 = stmt20.executeQuery(sql20);
-                    afsenderBrugerID = rs20.getInt(1);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+            String sql = "Select Bruger.personID, Bruger.virksomhedID from Bruger Where Bruger.personID =" + t.getAfsender().getBrugerID();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                // Vi opretter 2 int for at holde endten personID eller virksomhedID fra brugertabel
+                abpID = rs.getInt("personID");
+                abvID = rs.getInt("virksomhedID");
             }
-            if (abvID > 0) {
-                try {
-                    String sql25 = "Select Bruger.brugerID From Bruger where Bruger.virksomhedID=" + t.getAfsender().getBrugerID();
-                    Statement stmt25 = connection.createStatement();
-                    ResultSet rs25 = stmt25.executeQuery(sql25);
-                    afsenderBrugerID = rs25.getInt(1);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            stmt.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
+        if (abpID > 0) {
+                try {
+                    String sql = "Select Bruger.brugerID From Bruger where Bruger.personID=" + t.getAfsender().getBrugerID();
+                    Statement stmt = connection.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while(rs.next()) {
+                        afsenderBrugerID = rs.getInt(1);
+                    }
+                    stmt.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        if (abvID > 0) {
+                try {
+                    String sql = "Select Bruger.brugerID From Bruger where Bruger.virksomhedID=" + t.getAfsender().getBrugerID();
+                    Statement stmt = connection.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while(rs.next())
+                    {
+                        afsenderBrugerID = rs.getInt(1);
+                    }
+                    stmt.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         int mbpID = 0;
         int mbvID = 0;
         int modtagerBrugerID = 0;
         try {
-            String sql6 = "Select Bruger.personID, Bruger.virksomhedID from Bruger Where Bruger.personID =" + t.getModtager().getBrugerID();
-            Statement stmt6 = connection.createStatement();
-            ResultSet rs6 = stmt6.executeQuery(sql6);
-            /* Vi opretter 2 int for at holde endten personID eller virksomhedID fra brugertabel */
-            mbpID = rs6.getInt("personID");
-            mbvID = rs6.getInt("virksomhedID");
+            String sql = "Select Bruger.personID, Bruger.virksomhedID from Bruger Where Bruger.personID =" + t.getModtager().getBrugerID();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                /* Vi opretter 2 int for at holde endten personID eller virksomhedID fra brugertabel */
+                mbpID = rs.getInt("personID");
+                mbvID = rs.getInt("virksomhedID");
+            }
+            stmt.close();
         }   catch(SQLException throwables){
             throwables.printStackTrace();
         }
-
         if (mbpID > 0) {
             try {
-                String sqlp = "Select Bruger.brugerID From Bruger where Bruger.personID=" + t.getModtager().getBrugerID();
-                Statement stmtp = connection.createStatement();
-                ResultSet rsp = stmtp.executeQuery(sqlp);
-                modtagerBrugerID = rsp.getInt(1);
+                String sql = "Select Bruger.brugerID From Bruger where Bruger.personID=" + t.getModtager().getBrugerID();
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while(rs.next()) {
+                    modtagerBrugerID = rs.getInt(1);
+                }
+                stmt.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
             if (mbvID > 0) {
                 try {
-                    String sqlv = "Select Bruger.brugerID From Bruger where Bruger.virksomhedID=" + t.getModtager().getBrugerID();
-                    Statement stmtv = connection.createStatement();
-                    ResultSet rsv = stmtv.executeQuery(sqlv);
-                    modtagerBrugerID = rsv.getInt(1);
+                    String sql = "Select Bruger.brugerID From Bruger where Bruger.virksomhedID=" + t.getModtager().getBrugerID();
+                    Statement stmt = connection.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while(rs.next()) {
+                        modtagerBrugerID = rs.getInt(1);
+                    }
+                    stmt.close();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
             }
-            String sql = "INSERT INTO Anmod(afsenderID,modtagerID,beløb,dato,kommentar) VALUES(" + afsenderBrugerID + "," + modtagerBrugerID + "," +
-                    t.getAmount() + ",'" + "2022" + "','" + t.getKommentar() + "')";
+
             try {
+                String sql = "INSERT INTO Anmod(afsenderID,modtagerID,beløb,dato,kommentar) VALUES(" + afsenderBrugerID + "," + modtagerBrugerID + "," +
+                        t.getAmount() + ",'" + "2022" + "','" + t.getKommentar() + "')";
                 Statement stmt = connection.createStatement();
                 stmt.execute(sql);
                 stmt.close();
@@ -436,6 +470,7 @@ public class DBSQL {
                 datoliste.add(rsTrans.getString("dato"));
                 kommentarliste.add(rsTrans.getString("kommentar"));
             }
+            stmt2.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -477,14 +512,16 @@ public class DBSQL {
                     String sql4 = "SELECT Person.personID, Person.navn, Person.cpr, Person.telefonNR, Person.kode from Person inner join Bruger on Person.personID = Bruger.personID WHERE Person.personID =" + afsenderID;
                     Statement stmt4 = connection.createStatement();
                     ResultSet rs4 = stmt4.executeQuery(sql4);
-                    //oplysninger fra databases bruges til at oprette en person som kaldes afsender
-                    pafsender.setBrugerID(rs4.getInt("personID"));
-                    pafsender.setNavn(rs4.getString("navn"));
-                    pafsender.setCpr(rs4.getString("cpr"));
-                    pafsender.setTelefonNR(rs4.getString("telefonNR"));
-                    pafsender.setKode(rs4.getString("kode"));
-                    //Afsender tilføjes til transaktionen
-                    t1.setAfsender(pafsender);
+                    while (rs4.next()) {
+                        //oplysninger fra databases bruges til at oprette en person som kaldes afsender
+                        pafsender.setBrugerID(rs4.getInt("personID"));
+                        pafsender.setNavn(rs4.getString("navn"));
+                        pafsender.setCpr(rs4.getString("cpr"));
+                        pafsender.setTelefonNR(rs4.getString("telefonNR"));
+                        pafsender.setKode(rs4.getString("kode"));
+                        t1.setAfsender(pafsender);
+                    }
+                    stmt4.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -495,14 +532,17 @@ public class DBSQL {
                      String sql4 = "SELECT Virksomhed.virksomhedID, Virksomhed.navn, Virksomhed.cpr, Virksomhed.virksomhedNR, Virksomhed.kode from Virksomhed inner join Bruger on Virksomhed.virksomhedID = Bruger.virksomhedID WHERE Virksomhed.virksomhedID =" + afsenderID;
                      Statement stmt4 = connection.createStatement();
                      ResultSet rs4 = stmt4.executeQuery(sql4);
-                     //oplysninger fra databases bruges til at oprette en person som kaldes afsender
-                     pafsender.setBrugerID(rs4.getInt("personID"));
-                     pafsender.setNavn(rs4.getString("navn"));
-                     pafsender.setCpr(rs4.getString("cpr"));
-                     pafsender.setTelefonNR(rs4.getString("telefonNR"));
-                     pafsender.setKode(rs4.getString("kode"));
-                     //afsenderen tilføjes til transaktionen
-                     t1.setAfsender(pafsender);
+                     while(rs4.next()) {
+                         //oplysninger fra databases bruges til at oprette en person som kaldes afsender
+                         pafsender.setBrugerID(rs4.getInt("personID"));
+                         pafsender.setNavn(rs4.getString("navn"));
+                         pafsender.setCpr(rs4.getString("cpr"));
+                         pafsender.setTelefonNR(rs4.getString("telefonNR"));
+                         pafsender.setKode(rs4.getString("kode"));
+                         //afsenderen tilføjes til transaktionen
+                         t1.setAfsender(pafsender);
+                     }
+                     stmt4.close();
                  } catch (SQLException e) {
                      throw new RuntimeException(e);
                  }
@@ -516,6 +556,7 @@ public class DBSQL {
             // Vi opretter 2 int for at holde endten personID eller virksomhedID fra brugertabel
             bpID = rs5.getInt("personID");
             bvID = rs5.getInt("virksomhedID");
+            stmt5.close();
             }catch (SQLException throwables) {
                 throwables.printStackTrace();}
             //Hvis modtager er en virksomhed tjekkes Bruger tabel for at få virksomhedID på denne bruger. Dette gemmes i modtagerID
@@ -536,13 +577,16 @@ public class DBSQL {
                     Statement stmt15 = connection.createStatement();
                     ResultSet rs15 = stmt15.executeQuery(sql15);
                     //virksomheds oplysninger gemmes i vmodtager
-                    vmodtager.setBrugerID(rs15.getInt("virksomhedID"));
-                    vmodtager.setNavn(rs15.getString("navn"));
-                    vmodtager.setCvr(rs15.getString("cvr"));
-                    vmodtager.setVirksomhedsNR(rs15.getString("virksomhedNR"));
-                    vmodtager.setKode(rs15.getString("kode"));
-                    //vmodtager sættes som modtager til transaktionen
-                    t1.setModtager(vmodtager);
+                    while(rs15.next()) {
+                        vmodtager.setBrugerID(rs15.getInt("virksomhedID"));
+                        vmodtager.setNavn(rs15.getString("navn"));
+                        vmodtager.setCvr(rs15.getString("cvr"));
+                        vmodtager.setVirksomhedsNR(rs15.getString("virksomhedNR"));
+                        vmodtager.setKode(rs15.getString("kode"));
+                        //vmodtager sættes som modtager til transaktionen
+                        t1.setModtager(vmodtager);
+                    }
+                    stmt15.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -563,14 +607,17 @@ public class DBSQL {
                         String sql3 = "SELECT Person.personID, Person.navn, Person.cpr,Person.telefonNR,Person.kode from Person inner join Bruger on Person.personID = Bruger.personID WHERE Person.personID =" + modtagerID;
                         Statement stmt3 = connection.createStatement();
                         ResultSet rs3 = stmt3.executeQuery(sql3);
-                        //vi oplysningerne ind på pmodtager objektet
-                        pmodtager.setBrugerID(rs3.getInt("personID"));
-                        pmodtager.setNavn(rs3.getString("navn"));
-                        pmodtager.setCpr(rs3.getString("cpr"));
-                        pmodtager.setTelefonNR(rs3.getString("telefonNR"));
-                        pmodtager.setKode(rs3.getString("kode"));
-                        //pmodtager tilføjes som modtager til vores transaktion
-                        t1.setModtager(pmodtager);
+                        while(rs3.next()) {
+                            //vi oplysningerne ind på pmodtager objektet
+                            pmodtager.setBrugerID(rs3.getInt("personID"));
+                            pmodtager.setNavn(rs3.getString("navn"));
+                            pmodtager.setCpr(rs3.getString("cpr"));
+                            pmodtager.setTelefonNR(rs3.getString("telefonNR"));
+                            pmodtager.setKode(rs3.getString("kode"));
+                            //pmodtager tilføjes som modtager til vores transaktion
+                            t1.setModtager(pmodtager);
+                        }
+                        stmt3.close();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);}
                     }
@@ -591,6 +638,7 @@ public class DBSQL {
         int modtagerID =0;
         int brugerID = 0; //brugerID er det Bruger.BrugerID i databasen som holder styr på om det er en person eller virksomhed
         //Vi laver listerne af værdier fra databasen.
+        ArrayList<Integer> IDliste = new ArrayList<>();
         ArrayList<Integer> afsenderIDliste = new ArrayList<>();
         ArrayList<Integer> modtagerIDliste = new ArrayList<>();
         ArrayList<Double> amountliste = new ArrayList<>();
@@ -599,9 +647,9 @@ public class DBSQL {
         ArrayList<Transaktion> historik = new ArrayList<Transaktion>(); //Der tilføjes transaktion objekter til denne og metoden returnere denne
         if(length>5) {
             try {
-                String sql1 = "SELECT Person.personID from Person WHERE Person.telefonNR =" + NR;
+                String sql = "SELECT Person.personID from Person WHERE Person.telefonNR =" + NR;
                 Statement stmt = connection.createStatement();
-                ResultSet rs = stmt.executeQuery(sql1);
+                ResultSet rs = stmt.executeQuery(sql);
                 if (rs.next()) {
                     personID = rs.getInt(1);
                 }
@@ -610,9 +658,9 @@ public class DBSQL {
                 throwables.printStackTrace();
             }
             try {
-                String sql1 = "SELECT Bruger.brugerID from Bruger WHERE Bruger.personID =" + personID;
+                String sql = "SELECT Bruger.brugerID from Bruger WHERE Bruger.personID =" + personID;
                 Statement stmt = connection.createStatement();
-                ResultSet rs = stmt.executeQuery(sql1);
+                ResultSet rs = stmt.executeQuery(sql);
                 if (rs.next()) {
                     brugerID = rs.getInt(1);
                 }
@@ -623,9 +671,9 @@ public class DBSQL {
         }
         else {
             try {
-                String sql1 = "SELECT Virksomhed.virksomhedID from Virksomhed WHERE Virksomhed.virksomhedNR =" + NR;
+                String sql = "SELECT Virksomhed.virksomhedID from Virksomhed WHERE Virksomhed.virksomhedNR =" + NR;
                 Statement stmt = connection.createStatement();
-                ResultSet rs = stmt.executeQuery(sql1);
+                ResultSet rs = stmt.executeQuery(sql);
                 if (rs.next()) {
                     personID = rs.getInt(1);
                 }
@@ -634,9 +682,9 @@ public class DBSQL {
                 throwables.printStackTrace();
             }
             try {
-                String sql1 = "SELECT Bruger.brugerID from Bruger WHERE Bruger.personID =" + personID;
+                String sql = "SELECT Bruger.brugerID from Bruger WHERE Bruger.personID =" + personID;
                 Statement stmt = connection.createStatement();
-                ResultSet rs = stmt.executeQuery(sql1);
+                ResultSet rs = stmt.executeQuery(sql);
                 if (rs.next()) {
                     brugerID = rs.getInt(1);
                 }
@@ -647,18 +695,20 @@ public class DBSQL {
         }
         //Når vi har fundet bruger ID trækker vi en liste af alle transaktioner hvor denne bruger er modtager eller afsender
         try {
-            String sql2 = "SELECT Anmod.afsenderID, Anmod.modtagerID, Anmod.beløb, Anmod.dato, Anmod.kommentar from Anmod Where Anmod.afsenderID =" + brugerID + " OR Anmod.modtagerID =" + brugerID;
-            Statement stmt2 = connection.createStatement();
-            ResultSet rsTrans = stmt2.executeQuery(sql2);
+            String sql = "SELECT Anmod.anmodID,Anmod.afsenderID, Anmod.modtagerID, Anmod.beløb, Anmod.dato, Anmod.kommentar from Anmod Where Anmod.afsenderID =" + brugerID + " OR Anmod.modtagerID =" + brugerID;
+            Statement stmt = connection.createStatement();
+            ResultSet rs= stmt.executeQuery(sql);
             //Vi kører listen med transaktioner igennem
-            while (rsTrans.next()) {
+            while (rs.next()) {
                 //vi henter oplysninger på afsenderen. Afsender kan kun være en person
-                afsenderIDliste.add(rsTrans.getInt("afsenderID"));
-                modtagerIDliste.add(rsTrans.getInt("modtagerID"));
-                amountliste.add(rsTrans.getDouble("beløb"));
-                datoliste.add(rsTrans.getString("dato"));
-                kommentarliste.add(rsTrans.getString("kommentar"));
+                IDliste.add(rs.getInt("anmodID"));
+                afsenderIDliste.add(rs.getInt("afsenderID"));
+                modtagerIDliste.add(rs.getInt("modtagerID"));
+                amountliste.add(rs.getDouble("beløb"));
+                datoliste.add(rs.getString("dato"));
+                kommentarliste.add(rs.getString("kommentar"));
             }
+            stmt.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -672,9 +722,9 @@ public class DBSQL {
             int bpID = 0;
             int bvID = 0;
             try {
-                String sql1 = "SELECT Bruger.personID from Bruger WHERE Bruger.brugerID =" + afsenderIDliste.get(i);
+                String sql = "SELECT Bruger.personID from Bruger WHERE Bruger.brugerID =" + afsenderIDliste.get(i);
                 Statement stmt = connection.createStatement();
-                ResultSet rs = stmt.executeQuery(sql1);
+                ResultSet rs = stmt.executeQuery(sql);
                 if (rs.next()) {
                     afsenderID = rs.getInt(1);
                 }
@@ -683,34 +733,40 @@ public class DBSQL {
                 throwables.printStackTrace();
             }
             try {
-                String sql4 = "SELECT Person.personID, Person.navn, Person.cpr, Person.telefonNR, Person.kode from Person inner join Bruger on Person.personID = Bruger.personID WHERE Person.personID =" + afsenderID;
-                Statement stmt4 = connection.createStatement();
-                ResultSet rs4 = stmt4.executeQuery(sql4);
-                //oplysninger fra databases bruges til at oprette en person som kaldes afsender
-                pafsender.setBrugerID(rs4.getInt("personID"));
-                pafsender.setNavn(rs4.getString("navn"));
-                pafsender.setCpr(rs4.getString("cpr"));
-                pafsender.setTelefonNR(rs4.getString("telefonNR"));
-                pafsender.setKode(rs4.getString("kode"));
-                t1.setAfsender(pafsender);
+                String sql = "SELECT Person.personID, Person.navn, Person.cpr, Person.telefonNR, Person.kode from Person inner join Bruger on Person.personID = Bruger.personID WHERE Person.personID =" + afsenderID;
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while(rs.next()) {
+                    //oplysninger fra databases bruges til at oprette en person som kaldes afsender
+                    pafsender.setBrugerID(rs.getInt("personID"));
+                    pafsender.setNavn(rs.getString("navn"));
+                    pafsender.setCpr(rs.getString("cpr"));
+                    pafsender.setTelefonNR(rs.getString("telefonNR"));
+                    pafsender.setKode(rs.getString("kode"));
+                    t1.setAfsender(pafsender);
+                }
+                stmt.close();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
             try{
-                String sql5 = "Select Bruger.personID, Bruger.virksomhedID from Bruger INNER JOIN Anmod ON Anmod.modtagerID = Bruger.brugerID WHERE Anmod.modtagerID = "+modtagerIDliste.get(i);
-                Statement stmt5 = connection.createStatement();
-                ResultSet rs5 = stmt5.executeQuery(sql5);
-                // Vi opretter 2 int for at holde endten personID eller virksomhedID fra brugertabel
-                bpID = rs5.getInt("personID");
-                bvID = rs5.getInt("virksomhedID");
+                String sql = "Select Bruger.personID, Bruger.virksomhedID from Bruger INNER JOIN Anmod ON Anmod.modtagerID = Bruger.brugerID WHERE Anmod.modtagerID = "+modtagerIDliste.get(i);
+                Statement stmt = connection.createStatement();
+                ResultSet rs= stmt.executeQuery(sql);
+                while(rs.next()) {
+                    // Vi opretter 2 int for at holde endten personID eller virksomhedID fra brugertabel
+                    bpID = rs.getInt("personID");
+                    bvID = rs.getInt("virksomhedID");
+                }
+                stmt.close();
             }catch (SQLException throwables) {
                 throwables.printStackTrace();}
             //Hvis modtager er en virksomhed tjekkes virksomhed-tabellen og en virksomheds objekt oprettes og sættes som modtager
             if (bvID > 0) {
                 try {
-                    String sql1 = "SELECT Bruger.virksomhedID from Bruger WHERE Bruger.virksomhedID =" + modtagerIDliste.get(i);
+                    String sql = "SELECT Bruger.virksomhedID from Bruger WHERE Bruger.virksomhedID =" + modtagerIDliste.get(i);
                     Statement stmt = connection.createStatement();
-                    ResultSet rs = stmt.executeQuery(sql1);
+                    ResultSet rs = stmt.executeQuery(sql);
                     if (rs.next()) {
                         modtagerID = rs.getInt(1);
                     }
@@ -719,15 +775,18 @@ public class DBSQL {
                     throwables.printStackTrace();
                 }
                 try {
-                    String sql15 = "SELECT Virksomhed.virksomhedID,Virksomhed.navn, Virksomhed.cvr, Virksomhed.virksomhedNR, Virksomhed.kode from Virksomhed inner join Bruger on Virksomhed.virksomhedID = Bruger.virksomhedID WHERE Virksomhed.virksomhedID =" + modtagerID;
-                    Statement stmt15 = connection.createStatement();
-                    ResultSet rs15 = stmt15.executeQuery(sql15);
-                    vmodtager.setBrugerID(rs15.getInt("virksomhedID"));
-                    vmodtager.setNavn(rs15.getString("navn"));
-                    vmodtager.setCvr(rs15.getString("cvr"));
-                    vmodtager.setVirksomhedsNR(rs15.getString("virksomhedNR"));
-                    vmodtager.setKode(rs15.getString("kode"));
-                    t1.setModtager(vmodtager);
+                    String sql = "SELECT Virksomhed.virksomhedID,Virksomhed.navn, Virksomhed.cvr, Virksomhed.virksomhedNR, Virksomhed.kode from Virksomhed inner join Bruger on Virksomhed.virksomhedID = Bruger.virksomhedID WHERE Virksomhed.virksomhedID =" + modtagerID;
+                    Statement stmt = connection.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while(rs.next()) {
+                        vmodtager.setBrugerID(rs.getInt("virksomhedID"));
+                        vmodtager.setNavn(rs.getString("navn"));
+                        vmodtager.setCvr(rs.getString("cvr"));
+                        vmodtager.setVirksomhedsNR(rs.getString("virksomhedNR"));
+                        vmodtager.setKode(rs.getString("kode"));
+                        t1.setModtager(vmodtager);
+                    }
+                    stmt.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -735,9 +794,9 @@ public class DBSQL {
             if (bpID > 0) {
                 try {
 
-                    String sql1 = "SELECT Bruger.personID from Bruger WHERE Bruger.brugerID ="+modtagerIDliste.get(i);
+                    String sql = "SELECT Bruger.personID from Bruger WHERE Bruger.brugerID ="+modtagerIDliste.get(i);
                     Statement stmt = connection.createStatement();
-                    ResultSet rs = stmt.executeQuery(sql1);
+                    ResultSet rs = stmt.executeQuery(sql);
                     if (rs.next()) {
                         modtagerID = rs.getInt(1);
                     }
@@ -746,19 +805,24 @@ public class DBSQL {
                     throwables.printStackTrace();
                 }
                 try {
-                    String sql3 = "SELECT Person.personID, Person.navn, Person.cpr,Person.telefonNR,Person.kode from Person inner join Bruger on Person.personID = Bruger.personID WHERE Person.personID =" + modtagerID;
-                    Statement stmt3 = connection.createStatement();
-                    ResultSet rs3 = stmt3.executeQuery(sql3);
+                    String sql = "SELECT Person.personID, Person.navn, Person.cpr,Person.telefonNR,Person.kode from Person inner join Bruger on Person.personID = Bruger.personID WHERE Person.personID =" + modtagerID;
+                    Statement stmt = connection.createStatement();
+                    ResultSet rs= stmt.executeQuery(sql);
+                    while(rs.next())
+                    {
                     Person modtager = new Person();
-                    pmodtager.setBrugerID(rs3.getInt("personID"));
-                    pmodtager.setNavn(rs3.getString("navn"));
-                    pmodtager.setCpr(rs3.getString("cpr"));
-                    pmodtager.setTelefonNR(rs3.getString("telefonNR"));
-                    pmodtager.setKode(rs3.getString("kode"));
+                    pmodtager.setBrugerID(rs.getInt("personID"));
+                    pmodtager.setNavn(rs.getString("navn"));
+                    pmodtager.setCpr(rs.getString("cpr"));
+                    pmodtager.setTelefonNR(rs.getString("telefonNR"));
+                    pmodtager.setKode(rs.getString("kode"));
                     t1.setModtager(pmodtager);
+                    }
+                    stmt.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);}
             }
+            t1.setTransaktionID(IDliste.get(i));
             t1.setDato(new Date());
             t1.setAmount(amountliste.get(i));
             t1.setKommentar(kommentarliste.get(i));
@@ -833,23 +897,21 @@ public class DBSQL {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
         try {
-            String sql1 = "SELECT * FROM BankKonto WHERE bankKontoID=" + bankNR;
-            Statement stmt1 = connection.createStatement();
-            ResultSet rs1 = stmt1.executeQuery(sql1);
-            while(rs1.next())
+            String sql = "SELECT * FROM BankKonto WHERE bankKontoID=" + bankNR;
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next())
             {
-                databankKonto.setBankKontoID(rs1.getInt("bankKontoID"));
-                databankKonto.setBalance(rs1.getDouble("balance"));
-                databankKonto.setKontoNR(rs1.getString("kontoNR"));
+                databankKonto.setBankKontoID(rs.getInt("bankKontoID"));
+                databankKonto.setBalance(rs.getDouble("balance"));
+                databankKonto.setKontoNR(rs.getString("kontoNR"));
             }
-            stmt1.close();
+            stmt.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         dataPerson.setB(databankKonto);
-
         return dataPerson;
     }
     public BankKonto findBankKonto(String kontoNR)

@@ -41,4 +41,13 @@ public class BankKonto {
     public void setKontoNR(String kontoNR) {
         this.kontoNR = kontoNR;
     }
+
+    @Override
+    public String toString() {
+        return "BankKonto{" +
+                "bankKontoID=" + bankKontoID +
+                ", balance=" + balance +
+                ", kontoNR='" + kontoNR + '\'' +
+                '}';
+    }
 }

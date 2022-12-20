@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,10 +76,9 @@ public class Login extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(null,"Bruger navn og/eller kode er forkert","Forkert log ind informationer",JOptionPane.ERROR_MESSAGE);
     }
 
-
+    DBSQL dbsql = new DBSQL();
     @Override
     public void actionPerformed(ActionEvent e) {
-        DBSQL dbsql = new DBSQL();
         String loginNR = brugernavn.getText();
         String loginKode = kode.getText();
         String dbTelefonNR = "0";
@@ -87,13 +87,11 @@ public class Login extends JFrame implements ActionListener {
         Person p1 = new Person();
         Virksomhed v1 = new Virksomhed();
         if (e.getSource() == loginKnap) {
-
             if (loginNR.length() > 5) {
                 p1 = dbsql.hentPerson(loginNR);
                 dbTelefonNR = p1.getTelefonNR();
                 dbKode = p1.getKode();
                 test = 1;
-
             } else if (loginNR.length() == 5) {
                 v1 = dbsql.hentVirksomhed(loginNR);
                 dbTelefonNR = v1.getVirksomhedsNR();
@@ -105,10 +103,9 @@ public class Login extends JFrame implements ActionListener {
                 if (test == 1) {
                     ArrayList<Transaktion> list = dbsql.hentHistorik(p1.getTelefonNR());
                     Collections.reverse(list);
-                    StartSide startSide = new StartSide(list, dbsql.hentAnmodninger(p1.getTelefonNR()));
+                    ArrayList<Transaktion> list2 = dbsql.hentAnmodninger(p1.getTelefonNR());
+                    StartSide startSide = new StartSide(list,list2);
                     startSide.setAktivPerson(p1);
-
-
                 }
                 if (test == 2) {
                     ArrayList<Transaktion> listv = dbsql.hentHistorik(v1.getVirksomhedsNR());
@@ -116,8 +113,6 @@ public class Login extends JFrame implements ActionListener {
                     StartSide startSide = new StartSide(listv, dbsql.hentAnmodninger(v1.getVirksomhedsNR()));
                     startSide.setAktivVirksomhed(v1);
                 }
-
-
             }
 
         } //else if (brugernavn == null || kode == null){
