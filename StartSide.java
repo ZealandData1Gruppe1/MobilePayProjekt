@@ -13,6 +13,13 @@ public class StartSide extends JFrame implements ActionListener {
     JTextField kommentar;
     JTextField dato;
 
+    JLabel overskriftSendeAnmodning;
+    JPanel AnmodningPanel;
+    JTextField modtagerAnmodning;
+    JTextField amountAnmodning;
+    JTextField kommentarAnmodning;
+    JTextField datoAnmoding;
+    JButton anmondingKnap;
     JLabel overskriftSendPengePanel;
 
     JButton sendPengKnap;
@@ -40,9 +47,9 @@ public class StartSide extends JFrame implements ActionListener {
     Person aktivPerson = new Person();
     Virksomhed aktivVirksomhed = new Virksomhed();
 
-    ArrayList <Transaktion> historikliste = new ArrayList<>();
+    ArrayList<Transaktion> historikliste = new ArrayList<>();
 
-    ArrayList <Transaktion> anmodningliste = new ArrayList<>();
+    ArrayList<Transaktion> anmodningliste = new ArrayList<>();
 
     public Person getAktivPerson() {
         return aktivPerson;
@@ -85,48 +92,42 @@ public class StartSide extends JFrame implements ActionListener {
         this.anmodningliste = anmodningliste;
     }
 
-    StartSide(ArrayList<Transaktion> h, ArrayList<Transaktion>a) {
+    StartSide(ArrayList<Transaktion> h, ArrayList<Transaktion> a) {
         historikliste = h;
         anmodningliste = a;
-        Person p1 = new Person("","","","");
-        Person p2 = new Person("","","","");
+        Person p1 = new Person("", "", "", "");
+        Person p2 = new Person("", "", "", "");
 
-        Transaktion h1 = new Transaktion(p1,p2,0.0,new Date(),"");
-        Transaktion h2 = new Transaktion(p1,p2,0.0,new Date(),"");
-        Transaktion h3 = new Transaktion(p1,p2,0.0,new Date(),"");
-        if(h.size()>2)
-        {
-            h1 =h.get(0);
-            h2 =h.get(1);
-            h3 =h.get(2);
+        Transaktion h1 = new Transaktion(p1, p2, 0.0, new Date(), "");
+        Transaktion h2 = new Transaktion(p1, p2, 0.0, new Date(), "");
+        Transaktion h3 = new Transaktion(p1, p2, 0.0, new Date(), "");
+        if (h.size() > 2) {
+            h1 = h.get(0);
+            h2 = h.get(1);
+            h3 = h.get(2);
         }
-        if(h.size()==2)
-        {
-            h1 =h.get(0);
-            h2 =h.get(1);
+        if (h.size() == 2) {
+            h1 = h.get(0);
+            h2 = h.get(1);
         }
-        if(h.size()==1)
-        {
-            h1 =h.get(0);
+        if (h.size() == 1) {
+            h1 = h.get(0);
         }
 
-        Transaktion a1 = new Transaktion(p1,p2,0.0,new Date(),"");
-        Transaktion a2 = new Transaktion(p1,p2,0.0,new Date(),"");
-        Transaktion a3 = new Transaktion(p1,p2,0.0,new Date(),"");
-        if(a.size()>2)
-        {
-            a1 =a.get(0);
-            a2 =a.get(1);
-            a3 =a.get(2);
+        Transaktion a1 = new Transaktion(p1, p2, 0.0, new Date(), "");
+        Transaktion a2 = new Transaktion(p1, p2, 0.0, new Date(), "");
+        Transaktion a3 = new Transaktion(p1, p2, 0.0, new Date(), "");
+        if (a.size() > 2) {
+            a1 = a.get(0);
+            a2 = a.get(1);
+            a3 = a.get(2);
         }
-        if(a.size()==2)
-        {
-            a1 =h.get(0);
-            a2 =h.get(1);
+        if (a.size() == 2) {
+            a1 = h.get(0);
+            a2 = h.get(1);
         }
-        if(a.size()==1)
-        {
-            a1 =h.get(0);
+        if (a.size() == 1) {
+            a1 = h.get(0);
         }
 
         frame = new JFrame();
@@ -139,7 +140,7 @@ public class StartSide extends JFrame implements ActionListener {
         //Send Penge panelet
         sendPengePanel = new JPanel();
         overskriftSendPengePanel = new JLabel("Send Penge");
-        sendPengePanel.setBounds(0,0,30,60);
+        sendPengePanel.setBounds(0, 0, 30, 60);
         modtager = new JTextField("Modtager");
         amount = new JTextField("Beløb");
         kommentar = new JTextField("Kommentar");
@@ -152,11 +153,11 @@ public class StartSide extends JFrame implements ActionListener {
         sendPengePanel.add(kommentar);
         sendPengePanel.add(dato);
         sendPengePanel.add(sendPengKnap);
-        modtager.setPreferredSize(new Dimension(64,25));
-        amount.setPreferredSize(new Dimension(64,25));
-        kommentar.setPreferredSize(new Dimension(64,25));
-        dato.setPreferredSize(new Dimension(64,25));
-        sendPengKnap.setPreferredSize(new Dimension(80,25));
+        modtager.setPreferredSize(new Dimension(64, 25));
+        amount.setPreferredSize(new Dimension(64, 25));
+        kommentar.setPreferredSize(new Dimension(64, 25));
+        dato.setPreferredSize(new Dimension(64, 25));
+        sendPengKnap.setPreferredSize(new Dimension(80, 25));
 
         // Vis Anmodninger
         visAnmodningPanel = new JPanel();
@@ -177,7 +178,7 @@ public class StartSide extends JFrame implements ActionListener {
         visAnmodningPanel.add(visAnmodningKnap2);
         visAnmodningPanel.add(visAnmodnigLabel3);
         visAnmodningPanel.add(visAnmodningKnap3);
-        visAnmodningPanel.setLayout(new GridLayout(4,2));
+        visAnmodningPanel.setLayout(new GridLayout(4, 2));
         visAnmodningKnap1.addActionListener(this);
         visAnmodningKnap2.addActionListener(this);
         visAnmodningKnap3.addActionListener(this);
@@ -194,36 +195,50 @@ public class StartSide extends JFrame implements ActionListener {
         visHistorikPanel.add(visHistorik1);
         visHistorikPanel.add(visHistorik2);
         visHistorikPanel.add(visHistorik3);
-        visHistorikPanel.setLayout(new GridLayout(4,1,20,0));
+        visHistorikPanel.setLayout(new GridLayout(4, 1, 20, 0));
 
-
-
+        //Send Anmodning panelet
+        AnmodningPanel = new JPanel();
+        overskriftSendeAnmodning = new JLabel("Send Anmodning");
+        anmondingKnap = new JButton("Send Anmodning");
+        AnmodningPanel.setBounds(0, 0, 30, 60);
+        modtagerAnmodning = new JTextField("Modtager");
+        amountAnmodning = new JTextField("Beløb");
+        kommentarAnmodning = new JTextField("Kommentar");
+        datoAnmoding = new JTextField("Dato");
+        //AnmodningPanel.add(overskriftVisAnmodningPanel);
+        AnmodningPanel.add(modtagerAnmodning);
+        AnmodningPanel.add(amountAnmodning);
+        AnmodningPanel.add(kommentarAnmodning);
+        AnmodningPanel.add(datoAnmoding);
+        AnmodningPanel.add(anmondingKnap);
 
         //Det er tilføjes på frame
-
+        anmondingKnap.addActionListener(this);
         sendPengKnap.addActionListener(this);
         frame.add(sendPengePanel);
         frame.add(visAnmodningPanel);
         frame.add(visHistorikPanel);
-
+        frame.add(AnmodningPanel);
         frame.setVisible(true);
 
 
     }
+
     double amountRecieved;
+    double amoutAnmodetAmount;
 
 
-        // ActionListener
+    // ActionListener
     @Override           // Der skal være if else statements hvis der ikke er nok penge på kontoen.
     public void actionPerformed(ActionEvent e) {
         String tjekModtager = modtager.getText();
         DBSQL dbsql = new DBSQL();
         Virksomhed v1 = new Virksomhed();
         Person p1 = new Person();
-        if(e.getSource()==sendPengKnap){
+        if (e.getSource() == sendPengKnap) {
             amountRecieved = Double.parseDouble(amount.getText());
-            if(aktivPerson.getB().getBalance() > amountRecieved)
-            {
+            if (aktivPerson.getB().getBalance() > amountRecieved) {
                 if (tjekModtager.length() == 5) {
                     v1 = dbsql.hentVirksomhed(tjekModtager);
                     Transaktion t1 = new Transaktion(getAktivPerson(), v1, amountRecieved, new Date(), kommentar.getText());
@@ -240,37 +255,63 @@ public class StartSide extends JFrame implements ActionListener {
 
                 }
                 setAktivPerson(dbsql.hentPerson(aktivPerson.getTelefonNR()));
-                JOptionPane.showMessageDialog(null,"Penge Sendt!","Succes",JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Penge Sendt!", "Succes", JOptionPane.PLAIN_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Du har ikke nok penge på kontoen", "Du er fattig", JOptionPane.PLAIN_MESSAGE);
             }
-            else {
-                    JOptionPane.showMessageDialog(null, "Du har ikke nok penge på kontoen", "Du er fattig", JOptionPane.PLAIN_MESSAGE);
-                 }
 
 
         }
-        if(e.getSource()==visAnmodningKnap1){
-            JOptionPane.showMessageDialog(null,"Penge Sendt!","Succes",JOptionPane.PLAIN_MESSAGE);
-            visAnmodnigLabel1.setVisible(false);
+        if (e.getSource() == visAnmodningKnap1) {
+            ArrayList<Transaktion> anmodningList = new ArrayList<>();
+            anmodningList = dbsql.hentAnmodninger(aktivPerson.getTelefonNR());
+            Transaktion anmodning1 = new Transaktion();
+            anmodning1 = anmodningList.get(0);
+            Bruger modtagerFraAnmodning = anmodning1.getModtager();
+            amountRecieved = anmodning1.getAmount();
+            String kommentarAnmodning = anmodning1.getKommentar();
+
+            if (aktivPerson.getB().getBalance() > amountRecieved) {
+                Transaktion t2 = new Transaktion(modtagerFraAnmodning, getAktivPerson(), amountRecieved, new Date(), kommentarAnmodning);
+                dbsql.opretTransaktion(t2);
+                dbsql.withdrawMoney(aktivPerson, amountRecieved);
+                dbsql.depositMoney(modtagerFraAnmodning, amountRecieved);
+                setAktivPerson(dbsql.hentPerson(aktivPerson.getTelefonNR()));
+                dbsql.sletAnmodning(anmodning1);
+                JOptionPane.showMessageDialog(null, "Penge Sendt!", "Succes", JOptionPane.PLAIN_MESSAGE);
+                visAnmodnigLabel1.setVisible(false);
+            } else
+                JOptionPane.showMessageDialog(null, "Du har ikke nok penge på kontoen", "Du er fattig", JOptionPane.PLAIN_MESSAGE);
         }
-        if(e.getSource()==visAnmodningKnap2){
-            JOptionPane.showMessageDialog(null,"Penge Sendt!","Succes",JOptionPane.PLAIN_MESSAGE);
+
+
+        if (e.getSource() == visAnmodningKnap2) {
+            JOptionPane.showMessageDialog(null, "Penge Sendt!", "Succes", JOptionPane.PLAIN_MESSAGE);
             visAnmodnigLabel2.setVisible(false);
         }
-        if(e.getSource()==visAnmodningKnap3){
-            JOptionPane.showMessageDialog(null,"Penge Sendt!","Succes",JOptionPane.PLAIN_MESSAGE);
+        if (e.getSource() == visAnmodningKnap3) {
+            JOptionPane.showMessageDialog(null, "Penge Sendt!", "Succes", JOptionPane.PLAIN_MESSAGE);
             visAnmodnigLabel3.setVisible(false);
         }
-    }
+        String anmodingModtager = modtagerAnmodning.getText();
+        Person p2 = new Person();
+        amoutAnmodetAmount = Double.parseDouble(amountAnmodning.getText());
+        if(e.getSource()== anmondingKnap){
+            p2 = dbsql.hentPerson(anmodingModtager);
+            Transaktion t3 = new Transaktion(p2,getAktivPerson(),amoutAnmodetAmount,new Date(),kommentarAnmodning.getText());
+            dbsql.opretAnmodningFraPerson(t3);
+            JOptionPane.showMessageDialog(null,"Anmodning Sendt!","Succes",JOptionPane.PLAIN_MESSAGE);
+        }
 
-    public String printflot (Transaktion t)
-    {
-        String afsenderNavn = t.getAfsender().getNavn();
-        String modtagerNavn = t.getModtager().getNavn();
-        double amount = t.getAmount();
-        String kommentar = t.getKommentar();
-        String historik = "Fra: "+afsenderNavn  + " " + "Til: "+ modtagerNavn + " Beløb: " +amount +"DKK "+" " + kommentar;
-        return historik;
     }
-
+        public String printflot (Transaktion t){
+            String afsenderNavn = t.getAfsender().getNavn();
+            String modtagerNavn = t.getModtager().getNavn();
+            double amount = t.getAmount();
+            String kommentar = t.getKommentar();
+            String historik = "Fra: " + afsenderNavn + " " + "Til: " + modtagerNavn + " Beløb: " + amount + "DKK " + " " + kommentar;
+            return historik;
+        }
 
 }
+

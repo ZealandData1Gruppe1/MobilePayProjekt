@@ -72,7 +72,7 @@ public class Login extends JFrame implements ActionListener {
         return t;
     }
     private void forkertLogin(){
-        JOptionPane forkertLogin = new JOptionPane("Bruger navn og/eller kode er forkert");
+        JOptionPane.showMessageDialog(null,"Bruger navn og/eller kode er forkert","Forkert log ind informationer",JOptionPane.ERROR_MESSAGE);
     }
 
 
@@ -103,36 +103,34 @@ public class Login extends JFrame implements ActionListener {
             if (loginNR.equals(dbTelefonNR) && loginKode.equals(dbKode)) {
 
                 if (test == 1) {
-                    ArrayList<Transaktion> list =dbsql.hentHistorik(p1.getTelefonNR());
+                    ArrayList<Transaktion> list = dbsql.hentHistorik(p1.getTelefonNR());
                     Collections.reverse(list);
-                    StartSide startSide = new StartSide(list,dbsql.hentAnmodninger(p1.getTelefonNR()));
+                    StartSide startSide = new StartSide(list, dbsql.hentAnmodninger(p1.getTelefonNR()));
                     startSide.setAktivPerson(p1);
 
 
-
                 }
-                if (test == 2)
-                {
-                    ArrayList<Transaktion> listv =dbsql.hentHistorik(v1.getVirksomhedsNR());
+                if (test == 2) {
+                    ArrayList<Transaktion> listv = dbsql.hentHistorik(v1.getVirksomhedsNR());
                     Collections.reverse(listv);
-                    StartSide startSide = new StartSide(listv,dbsql.hentAnmodninger(v1.getVirksomhedsNR()));
+                    StartSide startSide = new StartSide(listv, dbsql.hentAnmodninger(v1.getVirksomhedsNR()));
                     startSide.setAktivVirksomhed(v1);
                 }
 
-                //else{}
-                //forkertLogin();}
 
             }
-            if (e.getSource() == opretPrivat) {
 
-                //frame.dispose();
-                OpretPrivat opretPrivat = new OpretPrivat();
-            }
-            if (e.getSource() == opretVirksomhed) {
-                //frame.dispose();
-                OpretVirksomhed opretVirksomhed = new OpretVirksomhed();
-            }
+        } //else if (brugernavn == null || kode == null){
+            //forkertLogin();}
 
+        if (e.getSource() == opretPrivat) {
+
+            //frame.dispose();
+            OpretPrivat opretPrivat = new OpretPrivat();
+        }
+        if (e.getSource() == opretVirksomhed) {
+            //frame.dispose();
+            OpretVirksomhed opretVirksomhed = new OpretVirksomhed();
         }
     }
 }

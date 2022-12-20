@@ -10,7 +10,7 @@ public class DBSQL {
         connection = null;
         stmt = null;
         try {
-            String url = "jdbc:sqlite:C:\\Users\\Kevin\\Documents\\GitHub\\MobilePayProjekt\\1.semesterprojekt.db";
+            String url = "jdbc:sqlite:C:\\Users\\Arbejde\\Desktop\\1 Semester projekt\\MobilePayProjekt\\1.semesterprojekt.db";
             connection = DriverManager.getConnection(url);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
