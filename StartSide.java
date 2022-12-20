@@ -219,6 +219,7 @@ public class StartSide extends JFrame implements ActionListener {
         frame.add(sendPengePanel);
         frame.add(visAnmodningPanel);
         frame.add(visHistorikPanel);
+        frame.add(overskriftSendeAnmodning);
         frame.add(AnmodningPanel);
         frame.setVisible(true);
 
